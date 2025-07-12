@@ -6,7 +6,7 @@
   <style>
     body {
       margin: 0;
-      background: #f9f9f9;
+      background: transparent; /* 배경 투명 */
       display: flex;
       justify-content: center;
       align-items: center;
@@ -28,7 +28,7 @@
       content: "";
       position: absolute;
       inset: 15%;
-      background: white;
+      background: transparent;  /* 도넛 안쪽도 투명하게 */
       border-radius: 50%;
     }
 
@@ -39,7 +39,7 @@
       transform: translate(-50%, -50%);
       font-size: 24px;
       font-weight: bold;
-      color: #333;
+      color: #ffffff; /* ✅ 텍스트 흰색 */
     }
   </style>
 </head>
