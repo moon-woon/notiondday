@@ -9,15 +9,17 @@
       background: transparent;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       height: 100vh;
+      font-family: sans-serif;
     }
 
-    .label {
-      font-size: 18px;
+    .title {
+      font-size: 20px;
       font-weight: bold;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
+      color: black;
     }
 
     .donut-chart {
@@ -25,7 +27,10 @@
       aspect-ratio: 1 / 1;
       border-radius: 50%;
       position: relative;
-      background: conic-gradient(#4caf50 0deg, #e0e0e0 0deg 360deg);
+      background: conic-gradient(
+        #4caf50 0deg,
+        #e0e0e0 0deg 360deg
+      );
     }
 
     .donut-chart::before {
@@ -33,6 +38,7 @@
       position: absolute;
       inset: 15%;
       border-radius: 50%;
+      background-color: white;
       z-index: 1;
     }
 
@@ -43,39 +49,26 @@
       transform: translate(-50%, -50%);
       font-size: 24px;
       font-weight: bold;
+      color: black;
       z-index: 2;
     }
 
-    /* 다크 모드 및 라이트 모드 대응 */
+    /* 다크모드 대응 */
     @media (prefers-color-scheme: dark) {
+      .title {
+        color: white;
+      }
       .donut-chart::before {
-        background: #111; /* 다크모드 중앙 배경 */
+        background-color: #111;
       }
-      .donut-text,
-      .label {
-        color: #ffffff;
-      }
-      .donut-chart {
-        background: conic-gradient(#4caf50 0deg, #444 0deg 360deg);
-      }
-    }
-
-    @media (prefers-color-scheme: light) {
-      .donut-chart::before {
-        background: #ffffff; /* 라이트모드 중앙 배경 */
-      }
-      .donut-text,
-      .label {
-        color: #000000;
-      }
-      .donut-chart {
-        background: conic-gradient(#4caf50 0deg, #e0e0e0 0deg 360deg);
+      .donut-text {
+        color: white;
       }
     }
   </style>
 </head>
 <body>
-  <div class="label">노무사 2차 시험까지</div>
+  <div class="title">노무사 2차 시험까지</div>
   <div class="donut-chart" id="chart">
     <div class="donut-text" id="text">D-?</div>
   </div>
@@ -88,7 +81,7 @@
     const end = new Date("2025-08-30");
     
     const today = new Date();
-    today.setHours(0, 0, 0, 0);  // ✅ 오늘 날짜를 0시 기준으로 고정
+    today.setHours(0, 0, 0, 0); // 자정 기준으로 날짜 비교
 
     const totalDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
     const remainingDays = Math.max(0, Math.floor((end - today) / (1000 * 60 * 60 * 24)));
