@@ -18,17 +18,15 @@
       aspect-ratio: 1 / 1;
       border-radius: 50%;
       position: relative;
-      background: conic-gradient(#4caf50 0deg, #e0e0e0 0deg 360deg);
     }
 
     .donut-chart::before {
       content: "";
       position: absolute;
       inset: 15%;
-      background: white; /* 기본은 밝은 모드용 */
       border-radius: 50%;
       z-index: 1;
-      transition: background 0.3s;
+      background: white; /* 기본 흰색 */
     }
 
     .donut-text {
@@ -38,19 +36,13 @@
       transform: translate(-50%, -50%);
       font-size: 24px;
       font-weight: bold;
-      color: black; /* 기본은 밝은 모드용 */
       z-index: 2;
-      transition: color 0.3s;
+      color: black; /* 기본 검정 */
     }
 
-    /* 🎯 다크모드일 때 자동 적용 */
     @media (prefers-color-scheme: dark) {
-      .donut-chart {
-        background: conic-gradient(#4caf50 0deg, #444444 0deg 360deg);
-      }
-
       .donut-chart::before {
-        background: #121212; /* 도넛 내부 배경 */
+        background: #121212;
       }
 
       .donut-text {
@@ -74,11 +66,17 @@
 
     const totalDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
     const remainingDays = Math.max(0, Math.ceil((end - today) / (1000 * 60 * 60 * 24)));
-
     const progressPercent = ((totalDays - remainingDays) / totalDays);
     const progressDegrees = progressPercent * 360;
 
-    chart.style.background = `conic-gradient(#4caf50 ${progressDegrees}deg, #e0e0e0 0deg 360deg)`;
+    // ✅ 시스템 다크모드 감지
+    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    // ✅ 배경 색상 분기
+    const baseBg = isDark ? '#444444' : '#e0e0e0';
+    const progressColor = '#4caf50';
+
+    chart.style.background = `conic-gradient(${progressColor} ${progressDegrees}deg, ${baseBg} 0deg 360deg)`;
     text.textContent = `D-${remainingDays}`;
   </script>
 </body>
