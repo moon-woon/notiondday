@@ -8,18 +8,10 @@
       margin: 0;
       background: transparent;
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
+      align-items: center;
+      flex-direction: column;
       height: 100vh;
-      font-family: sans-serif;
-    }
-
-    .title {
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 20px;
-      color: black;
     }
 
     .donut-chart {
@@ -27,19 +19,7 @@
       aspect-ratio: 1 / 1;
       border-radius: 50%;
       position: relative;
-      background: conic-gradient(
-        #4caf50 0deg,
-        #e0e0e0 0deg 360deg
-      );
-    }
-
-    .donut-chart::before {
-      content: "";
-      position: absolute;
-      inset: 15%;
-      border-radius: 50%;
-      background-color: white;
-      z-index: 1;
+      background: conic-gradient(#4caf50 0deg, #e0e0e0 0deg 360deg);
     }
 
     .donut-text {
@@ -49,26 +29,18 @@
       transform: translate(-50%, -50%);
       font-size: 24px;
       font-weight: bold;
-      color: black;
       z-index: 2;
     }
 
-    /* 다크모드 대응 */
-    @media (prefers-color-scheme: dark) {
-      .title {
-        color: white;
-      }
-      .donut-chart::before {
-        background-color: #111;
-      }
-      .donut-text {
-        color: white;
-      }
+    .donut-caption {
+      margin-bottom: 12px;
+      font-size: 16px;
+      font-weight: 600;
     }
   </style>
 </head>
 <body>
-  <div class="title">노무사 2차 시험까지</div>
+  <div class="donut-caption" id="caption">노무사 2차 시험까지</div>
   <div class="donut-chart" id="chart">
     <div class="donut-text" id="text">D-?</div>
   </div>
@@ -76,21 +48,43 @@
   <script>
     const chart = document.getElementById("chart");
     const text = document.getElementById("text");
+    const caption = document.getElementById("caption");
 
     const start = new Date("2025-07-10");
     const end = new Date("2025-08-30");
     
-    const today = new Date();
+    const today = new Date(); // 시스템 시간 기준
     today.setHours(0, 0, 0, 0); // 자정 기준으로 날짜 비교
 
     const totalDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
-    const remainingDays = Math.max(0, Math.floor((end - today) / (1000 * 60 * 60 * 24)));
+    const remainingDays = Math.floor(0, Math.ceil((end - today) / (1000 * 60 * 60 * 24)));
 
     const progressPercent = ((totalDays - remainingDays) / totalDays);
     const progressDegrees = progressPercent * 360;
 
-    chart.style.background = `conic-gradient(#4caf50 ${progressDegrees}deg, #e0e0e0 0deg 360deg)`;
+    // 다크모드 감지
+    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    const outerColor = isDark ? '#444444' : '#e0e0e0';
+    const innerColor = isDark ? '#121212' : '#ffffff';
+    const textColor = isDark ? '#ffffff' : '#000000';
+
+    // 배경 색상 조정
+    chart.style.background = `conic-gradient(#4caf50 ${progressDegrees}deg, ${outerColor} 0deg 360deg)`;
+
+    // 중앙 원
+    const innerCircle = document.createElement("div");
+    innerCircle.style.position = "absolute";
+    innerCircle.style.inset = "15%";
+    innerCircle.style.background = innerColor;
+    innerCircle.style.borderRadius = "50%";
+    innerCircle.style.zIndex = "1";
+    chart.appendChild(innerCircle);
+
+    // 텍스트 적용
     text.textContent = `D-${remainingDays}`;
+    text.style.color = textColor;
+    caption.style.color = textColor;
   </script>
 </body>
 </html>
