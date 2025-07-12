@@ -6,7 +6,7 @@
   <style>
     body {
       margin: 0;
-      background: transparent; /* ✅ 완전 투명 */
+      background: transparent;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -18,19 +18,17 @@
       aspect-ratio: 1 / 1;
       border-radius: 50%;
       position: relative;
-      background: conic-gradient(
-        #4caf50 0deg,
-        #e0e0e0 0deg 360deg
-      );
+      background: conic-gradient(#4caf50 0deg, #e0e0e0 0deg 360deg);
     }
 
     .donut-chart::before {
       content: "";
       position: absolute;
       inset: 15%;
-      background: transparent; /* ✅ 안쪽 배경 투명 */
+      background: white; /* 기본은 밝은 모드용 */
       border-radius: 50%;
       z-index: 1;
+      transition: background 0.3s;
     }
 
     .donut-text {
@@ -40,8 +38,24 @@
       transform: translate(-50%, -50%);
       font-size: 24px;
       font-weight: bold;
-      color: #ffffff; /* ✅ 텍스트 흰색 */
+      color: black; /* 기본은 밝은 모드용 */
       z-index: 2;
+      transition: color 0.3s;
+    }
+
+    /* 🎯 다크모드일 때 자동 적용 */
+    @media (prefers-color-scheme: dark) {
+      .donut-chart {
+        background: conic-gradient(#4caf50 0deg, #444444 0deg 360deg);
+      }
+
+      .donut-chart::before {
+        background: #121212; /* 도넛 내부 배경 */
+      }
+
+      .donut-text {
+        color: white;
+      }
     }
   </style>
 </head>
