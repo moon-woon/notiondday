@@ -8,18 +8,17 @@
       margin: 0;
       background: transparent;
       display: flex;
+      flex-direction: column; /* 도넛 아래 문구 가능하게 */
       justify-content: center;
       align-items: center;
       height: 100vh;
-      flex-direction: column;
       font-family: sans-serif;
     }
 
     .caption {
-      margin-bottom: 12px; /* 도넛 위에 배치 */
-      font-size: 16px;
-      color: black;
-      transition: color 0.3s;
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 20px;
     }
 
     .donut-chart {
@@ -27,16 +26,6 @@
       aspect-ratio: 1 / 1;
       border-radius: 50%;
       position: relative;
-    }
-
-    .donut-chart::before {
-      content: "";
-      position: absolute;
-      inset: 15%;
-      background: white;
-      border-radius: 50%;
-      z-index: 1;
-      transition: background 0.3s;
     }
 
     .donut-text {
@@ -47,24 +36,11 @@
       font-size: 24px;
       font-weight: bold;
       z-index: 2;
-      color: black;
-      transition: color 0.3s;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      .donut-chart::before {
-        background: #121212;
-      }
-
-      .donut-text,
-      .caption {
-        color: white;
-      }
     }
   </style>
 </head>
 <body>
-  <div class="caption">노무사 2차 시험까지</div>
+  <div class="caption" id="caption">노무사 2차 시험까지</div>
   <div class="donut-chart" id="chart">
     <div class="donut-text" id="text">D-?</div>
   </div>
@@ -72,10 +48,13 @@
   <script>
     const chart = document.getElementById("chart");
     const text = document.getElementById("text");
+    const caption = document.getElementById("caption");
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
     const start = new Date("2025-07-10");
     const end = new Date("2025-08-30");
-    const today = new Date();
 
     const totalDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
     const remainingDays = Math.max(0, Math.ceil((end - today) / (1000 * 60 * 60 * 24)));
@@ -83,10 +62,27 @@
     const progressDegrees = progressPercent * 360;
 
     const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const bgColor = isDark ? '#444444' : '#e0e0e0';
 
-    chart.style.background = `conic-gradient(#4caf50 ${progressDegrees}deg, ${bgColor} 0deg 360deg)`;
+    const outerColor = isDark ? '#444444' : '#e0e0e0';
+    const innerColor = isDark ? '#121212' : '#ffffff';
+    const textColor = isDark ? '#ffffff' : '#000000';
+
+    // 도넛 배경
+    chart.style.background = `conic-gradient(#4caf50 ${progressDegrees}deg, ${outerColor} 0deg 360deg)`;
+
+    // 중앙 원 수동 삽입 (CSS보다 확실)
+    const innerCircle = document.createElement('div');
+    innerCircle.style.position = 'absolute';
+    innerCircle.style.inset = '15%';
+    innerCircle.style.background = innerColor;
+    innerCircle.style.borderRadius = '50%';
+    innerCircle.style.zIndex = '1';
+    chart.appendChild(innerCircle);
+
+    // 텍스트 및 문구 색상
     text.textContent = `D-${remainingDays}`;
+    text.style.color = textColor;
+    caption.style.color = textColor;
   </script>
 </body>
 </html>
