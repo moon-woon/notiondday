@@ -11,6 +11,15 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      flex-direction: column;
+      font-family: sans-serif;
+    }
+
+    .caption {
+      margin-bottom: 12px; /* 도넛 위에 배치 */
+      font-size: 16px;
+      color: black;
+      transition: color 0.3s;
     }
 
     .donut-chart {
@@ -24,7 +33,7 @@
       content: "";
       position: absolute;
       inset: 15%;
-      background: white; /* 💡 기본: 라이트 모드용 */
+      background: white;
       border-radius: 50%;
       z-index: 1;
       transition: background 0.3s;
@@ -38,22 +47,24 @@
       font-size: 24px;
       font-weight: bold;
       z-index: 2;
-      color: black; /* 💡 기본: 라이트 모드용 */
+      color: black;
       transition: color 0.3s;
     }
 
     @media (prefers-color-scheme: dark) {
       .donut-chart::before {
-        background: #121212; /* 💡 다크 모드 중앙색 */
+        background: #121212;
       }
 
-      .donut-text {
-        color: white; /* 💡 다크 모드 텍스트 */
+      .donut-text,
+      .caption {
+        color: white;
       }
     }
   </style>
 </head>
 <body>
+  <div class="caption">노무사 2차 시험까지</div>
   <div class="donut-chart" id="chart">
     <div class="donut-text" id="text">D-?</div>
   </div>
