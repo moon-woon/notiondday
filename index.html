@@ -24,9 +24,10 @@
       content: "";
       position: absolute;
       inset: 15%;
+      background: white; /* 💡 기본: 라이트 모드용 */
       border-radius: 50%;
       z-index: 1;
-      background: white; /* 기본 흰색 */
+      transition: background 0.3s;
     }
 
     .donut-text {
@@ -37,16 +38,17 @@
       font-size: 24px;
       font-weight: bold;
       z-index: 2;
-      color: black; /* 기본 검정 */
+      color: black; /* 💡 기본: 라이트 모드용 */
+      transition: color 0.3s;
     }
 
     @media (prefers-color-scheme: dark) {
       .donut-chart::before {
-        background: #121212;
+        background: #121212; /* 💡 다크 모드 중앙색 */
       }
 
       .donut-text {
-        color: white;
+        color: white; /* 💡 다크 모드 텍스트 */
       }
     }
   </style>
@@ -69,14 +71,10 @@
     const progressPercent = ((totalDays - remainingDays) / totalDays);
     const progressDegrees = progressPercent * 360;
 
-    // ✅ 시스템 다크모드 감지
     const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const bgColor = isDark ? '#444444' : '#e0e0e0';
 
-    // ✅ 배경 색상 분기
-    const baseBg = isDark ? '#444444' : '#e0e0e0';
-    const progressColor = '#4caf50';
-
-    chart.style.background = `conic-gradient(${progressColor} ${progressDegrees}deg, ${baseBg} 0deg 360deg)`;
+    chart.style.background = `conic-gradient(#4caf50 ${progressDegrees}deg, ${bgColor} 0deg 360deg)`;
     text.textContent = `D-${remainingDays}`;
   </script>
 </body>
