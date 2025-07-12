@@ -1,36 +1,35 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>D-Day 도넛 위젯</title>
+  <title>D-Day 도넛 차트</title>
   <style>
     body {
-      font-family: sans-serif;
+      margin: 0;
+      background: #f9f9f9;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background: #f9f9f9;
     }
 
     .donut-chart {
       width: 200px;
-      height: 200px;
+      aspect-ratio: 1 / 1;
       border-radius: 50%;
-      background: conic-gradient(#4caf50 calc(var(--percent) * 1%), #e0e0e0 0%);
       position: relative;
+      background: conic-gradient(
+        #4caf50 0deg,
+        #e0e0e0 0deg 360deg
+      );
     }
 
     .donut-chart::before {
       content: "";
       position: absolute;
-      top: 25px;
-      left: 25px;
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
+      inset: 15%;
       background: white;
+      border-radius: 50%;
     }
 
     .donut-text {
@@ -50,6 +49,9 @@
   </div>
 
   <script>
+    const chart = document.getElementById("chart");
+    const text = document.getElementById("text");
+
     const start = new Date("2025-07-10");
     const end = new Date("2025-08-30");
     const today = new Date();
@@ -57,10 +59,11 @@
     const totalDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
     const remainingDays = Math.max(0, Math.ceil((end - today) / (1000 * 60 * 60 * 24)));
 
-    const progressPercent = ((totalDays - remainingDays) / totalDays) * 100;
+    const progressPercent = ((totalDays - remainingDays) / totalDays);
+    const progressDegrees = progressPercent * 360;
 
-    document.documentElement.style.setProperty('--percent', progressPercent + '%');
-    document.getElementById("text").innerText = `D-${remainingDays}`;
+    chart.style.background = `conic-gradient(#4caf50 ${progressDegrees}deg, #e0e0e0 0deg 360deg)`;
+    text.textContent = `D-${remainingDays}`;
   </script>
 </body>
 </html>
